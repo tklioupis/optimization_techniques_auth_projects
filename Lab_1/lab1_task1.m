@@ -1,4 +1,4 @@
-%Exercise 1.1
+%Lab 1 Task 1
 %Theodoros Lioupis AEM 9733
 
 clear all;
