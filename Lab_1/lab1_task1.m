@@ -24,6 +24,16 @@ for case_of_fxi = 1:3 %loop that runs 3 times, each time for one of the three fu
     e_c3 = 0.001;
     M2 = 1;
     [k_c3,a_c3,b_c3,calcs_c3] = bisector_method(case_of_fxi,l_c3,e_c3,a1,b1,M2);
+    %fourth case: l = 0.02, e = 0.001
+    l_c4 = 0.02;
+    e_c4 = 0.001;
+    M4 = 1;
+    [k_c4,a_c4,b_c4,calcs_c4] = bisector_method(case_of_fxi,l_c4,e_c4,a1,b1,M4);
+    %fifth case: l = 0.04, e = 0.001
+    l_c5 = 0.04;
+    e_c5 = 0.001;
+    M5 = 1;
+    [k_c5,a_c5,b_c5,calcs_c5] = bisector_method(case_of_fxi,l_c5,e_c5,a1,b1,M5);
 
     %plots of the results for each case of study
     %first case: plot the calcualtions of fxi for l = 0.01 (const) and e changeable
@@ -41,9 +51,10 @@ for case_of_fxi = 1:3 %loop that runs 3 times, each time for one of the three fu
     %third case: plor (k,ak) and (k,bk) for l = 0.01, e = 0.001
     figure()
     plot(a_c3,'b--o');
-    title(['[ak,bk] as (k,ak) and (k,bk) for f',num2str(case_of_fxi)]);
+    title(['[ak,bk] as (k,ak) and (k,bk), lamda = [0.01,0.02,0.04], for f',num2str(case_of_fxi)]);
     hold on;
     plot(b_c3,'r--o');
+    xline([k_c3 k_c4 k_c5],'-',{'l = 0.01','l = 0.02','l = 0.04'});
     xlabel('k');
     ylabel('[ak,bk]');
     legend('ak','bk');

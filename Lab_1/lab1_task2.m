@@ -14,10 +14,18 @@ for case_of_fxi = 1:3 %loop that runs 3 times, each time for one of the three fu
     %first case: l changeable
     l_c1 = linspace(0.005,0.05,M1); 
     [k_c1,a_c1,b_c1,calcs_c1] = golden_sector_method(case_of_fxi,l_c1,a1,b1,M1);
-    %second case: l = 0.01, l = 0.02, l = 0.03
+    %second case: l = 0.01
     l_c2 = 0.01;
     M2 = 1;
     [k_c2,a_c2,b_c2,calcs_c2] = golden_sector_method(case_of_fxi,l_c2,a1,b1,M2);
+    %third case: l = 0.02
+    l_c3 = 0.02;
+    M3 = 1;
+    [k_c3,a_c3,b_c3,calcs_c3] = golden_sector_method(case_of_fxi,l_c3,a1,b1,M3);
+    %fourth case: l = 0.03
+    l_c4 = 0.04;
+    M4 = 1;
+    [k_c4,a_c4,b_c4,calcs_c4] = golden_sector_method(case_of_fxi,l_c4,a1,b1,M4);
     
     %plots
     %first case: l changeable , plot (l,calculations of fxi)
@@ -26,12 +34,13 @@ for case_of_fxi = 1:3 %loop that runs 3 times, each time for one of the three fu
     title(['lamda changeable in [0.005,0.05] for f',num2str(case_of_fxi)]);
     xlabel('lamda');
     ylabel('fxi calculations');
-    %second case: plot (k,ak) and (k,bk) for l = 0.01
+    %second,third and fourth case: plot (k,ak) and (k,bk) for l = 0.01, l = 0.02, l = 0.04
     figure()
     plot(a_c2,'b--o');
-    title(['[ak,bk] as (k,ak) and (k,bk), lamda = 0.01, for f',num2str(case_of_fxi)]);
+    title(['[ak,bk] as (k,ak) and (k,bk), lamda = [0.01,0.02,0.04], for f',num2str(case_of_fxi)]);
     hold on;
     plot(b_c2,'r--o');
+    xline([k_c2 k_c3 k_c4],'-',{'l = 0.01','l = 0.02','l = 0.04'});
     xlabel('k');
     ylabel('[ak,bk]');
     legend('ak','bk');
