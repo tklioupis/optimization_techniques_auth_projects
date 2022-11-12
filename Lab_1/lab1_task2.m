@@ -63,47 +63,47 @@ end
 %the implementation of the golden sector method with landa as vector in order to be
 %able to check the results with a constant lamda value or changeable
 function [k,a,b,calcs] = golden_sector_method(case_of_fxi,l,a1,b1,M)
-g = 0.618;
-a(1)=a1; %I dont knpw the size of a so I will use dynamic memory allocation
-b(1)=b1; %I dont knpw the size of b so I will use dynamic memory allocation
-k = ones(1,M); % k is of size 1XM. M is the length of the different lamdas or epsilons 
-calcs = zeros(1,M); %to store every fxi calculation
-i = 1;
-while (b(k(i)) - a(k(i))) >= l(i) %the loop terminates when I have checked that bk-ak < l for all possible lamdas (const or changeable)
-    if (k(i) == 1) %initialization
-        x1(k(i)) = a(k(i)) + (1-g)*(b(k(i))-a(k(i)));  
-        x2(k(i)) = a(k(i)) + g*(b(k(i))-a(k(i)));
-        y1(k(i)) = f(x1(k(i)),case_of_fxi);
-        y2(k(i)) = f(x2(k(i)),case_of_fxi);
-        calcs(i) = calcs(i) + 2; %each time I calculate the value of fxi, I increase reps(i)
+    g = 0.618;
+    a(1)=a1; %I dont knpw the size of a so I will use dynamic memory allocation
+    b(1)=b1; %I dont knpw the size of b so I will use dynamic memory allocation
+    k = ones(1,M); % k is of size 1XM. M is the length of the different lamdas or epsilons 
+    calcs = zeros(1,M); %to store every fxi calculation
+    i = 1;
+    while (b(k(i)) - a(k(i))) >= l(i) %the loop terminates when I have checked that bk-ak < l for all possible lamdas (const or changeable)
+        if (k(i) == 1) %initialization
+            x1(k(i)) = a(k(i)) + (1-g)*(b(k(i))-a(k(i)));  
+            x2(k(i)) = a(k(i)) + g*(b(k(i))-a(k(i)));
+            y1(k(i)) = f(x1(k(i)),case_of_fxi);
+            y2(k(i)) = f(x2(k(i)),case_of_fxi);
+            calcs(i) = calcs(i) + 2; %each time I calculate the value of fxi, I increase reps(i)
+        end
+        if (y1(k(i)) > y2(k(i))) 
+            a(k(i)+1) = x1(k(i));
+            b(k(i)+1) = b(k(i));
+    
+            x2(k(i)+1) = a(k(i)+1) + g*(b(k(i)+1) - a(k(i)+1));
+            x1(k(i)+1) = x2(k(i));
+    
+            y1(k(i)+1) = y2(k(i));
+            y2(k(i)+1) = f(x2(k(i)+1),case_of_fxi);
+            calcs(i) = calcs(i) + 1;
+        else 
+            a(k(i)+1) = a(k(i));
+            b(k(i)+1) = x2(k(i));
+    
+            x2(k(i)+1) = x1(k(i));
+            x1(k(i)+1) = a(k(i)+1) + (1-g)*(b(k(i)+1) - a(k(i)+1));
+    
+            y1(k(i)+1) = f(x1(k(i)+1),case_of_fxi);
+            y2(k(i)+1) = y1(k(i));
+            calcs(i) = calcs(i) + 1;
+        end
+        k(i) = k(i)+1;
+        if ((b(k(i)) - a(k(i)) < l(i)) && (i < M)) %if bk-ak<l and I havent checked all lamda cases
+            %when I have found the [ak,bk] with the x* for a spesific lamda, I increase i so I can continue with the next lamda
+            i = i + 1;
+        end    
     end
-    if (y1(k(i)) > y2(k(i))) 
-        a(k(i)+1) = x1(k(i));
-        b(k(i)+1) = b(k(i));
-
-        x2(k(i)+1) = a(k(i)+1) + g*(b(k(i)+1) - a(k(i)+1));
-        x1(k(i)+1) = x2(k(i));
-
-        y1(k(i)+1) = y2(k(i));
-        y2(k(i)+1) = f(x2(k(i)+1),case_of_fxi);
-        calcs(i) = calcs(i) + 1;
-    else 
-        a(k(i)+1) = a(k(i));
-        b(k(i)+1) = x2(k(i));
-
-        x2(k(i)+1) = x1(k(i));
-        x1(k(i)+1) = a(k(i)+1) + (1-g)*(b(k(i)+1) - a(k(i)+1));
-
-        y1(k(i)+1) = f(x1(k(i)+1),case_of_fxi);
-        y2(k(i)+1) = y1(k(i));
-        calcs(i) = calcs(i) + 1;
-    end
-    k(i) = k(i)+1;
-    if ((b(k(i)) - a(k(i)) < l(i)) && (i < M)) %if bk-ak<l and I havent checked all lamda cases
-        %when I have found the [ak,bk] with the x* for a spesific lamda, I increase i so I can continue with the next lamda
-        i = i + 1;
-    end    
-end
 end
 
 
