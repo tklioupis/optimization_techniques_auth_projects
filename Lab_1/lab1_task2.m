@@ -5,13 +5,14 @@ clear all;
 close all;
 clc;
 
-%initial interval
+%% initial interval
 a1 = -1;
 b1 = 3;
 
+%% run the method for each of the three functions and plot the results
 for case_of_fxi = 1:3 %loop that runs 3 times, each time for one of the three functions
-    M1 = 1000; %length of the different lamdas or epsilons (depending on which is changeable)
     %first case: l changeable
+    M1 = 100; %length of the different lamdas for this case
     l_c1 = linspace(0.005,0.05,M1); 
     [k_c1,a_c1,b_c1,calcs_c1] = golden_sector_method(case_of_fxi,l_c1,a1,b1,M1);
     %second case: l = 0.01
@@ -48,7 +49,7 @@ for case_of_fxi = 1:3 %loop that runs 3 times, each time for one of the three fu
 end
 
 
-%function to easily calculate the fxi depending on the case
+%% function to easily calculate the fxi depending on the case
 function [fxi] = f(x, i)
     switch i
         case 1
@@ -60,12 +61,11 @@ function [fxi] = f(x, i)
     end       
 end
 
-%the implementation of the golden sector method with landa as vector in order to be
-%able to check the results with a constant lamda value or changeable
+%% the implementation of the golden sector method with landa as vector in order to beable to check the results with a constant lamda value or changeable
 function [k,a,b,calcs] = golden_sector_method(case_of_fxi,l,a1,b1,M)
     g = 0.618;
-    a(1)=a1; %I dont knpw the size of a so I will use dynamic memory allocation
-    b(1)=b1; %I dont knpw the size of b so I will use dynamic memory allocation
+    a(1) = a1; %I dont knpw the size of a so I will use dynamic memory allocation
+    b(1) = b1; %I dont knpw the size of b so I will use dynamic memory allocation
     k = ones(1,M); % k is of size 1XM. M is the length of the different lamdas or epsilons 
     calcs = zeros(1,M); %to store every fxi calculation
     i = 1;
@@ -98,7 +98,7 @@ function [k,a,b,calcs] = golden_sector_method(case_of_fxi,l,a1,b1,M)
             y2(k(i)+1) = y1(k(i));
             calcs(i) = calcs(i) + 1;
         end
-        k(i) = k(i)+1;
+        k(i) = k(i) + 1;
         if ((b(k(i)) - a(k(i)) < l(i)) && (i < M)) %if bk-ak<l and I havent checked all lamda cases
             %when I have found the [ak,bk] with the x* for a spesific lamda, I increase i so I can continue with the next lamda
             i = i + 1;
