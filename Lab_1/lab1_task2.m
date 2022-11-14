@@ -71,10 +71,10 @@ function [k,a,b,calcs] = golden_sector_method(case_of_fxi,l,a1,b1,M)
     i = 1;
     while (b(k(i)) - a(k(i))) >= l(i) %the loop terminates when I have checked that bk-ak < l for all possible lamdas (const or changeable)
         if (k(i) == 1) %initialization
-            x1(k(i)) = a(k(i)) + (1-g)*(b(k(i))-a(k(i)));  
-            x2(k(i)) = a(k(i)) + g*(b(k(i))-a(k(i)));
-            y1(k(i)) = f(x1(k(i)),case_of_fxi);
-            y2(k(i)) = f(x2(k(i)),case_of_fxi);
+            x1(1) = a(1) + (1-g)*(b(1)-a(1));  
+            x2(1) = a(1) + g*(b(1)-a(1));
+            y1(1) = f(x1(1),case_of_fxi);
+            y2(1) = f(x2(1),case_of_fxi);
             calcs(i) = calcs(i) + 2; %each time I calculate the value of fxi, I increase reps(i)
         end
         if (y1(k(i)) > y2(k(i))) 
