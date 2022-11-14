@@ -49,6 +49,23 @@ for case_of_fxi = 1:3
     hold off;
 end
 
+%% function to easily calculate the dfxi depending on the case
+function [dfxi] = df(x, i)
+    syms z;
+    switch i
+        case 1
+            fxi = (z-2)^2 + z*log(z+3);
+            dfxi = diff(fxi);
+        case 2  
+            fxi = 5^z + (2-cos(z))^2;
+            dfxi = diff(fxi);
+        case 3
+            fxi = exp(z)*(z^3-1) + (z-1)*sin(z);
+            dfxi = diff(fxi);
+    end
+    dfxi = subs(dfxi, z, x);
+end
+
 %% the implementation of the bisector method with df(x)/dx with landa as a vector to check the results for multiple values of l
 function [k,a,b,calcs] = bisector_method_diff(case_of_fxi,l,a1,b1,M)
     a(1) = a1; %I dont knpw the size of a so I will use dynamic memory allocation
@@ -78,21 +95,4 @@ function [k,a,b,calcs] = bisector_method_diff(case_of_fxi,l,a1,b1,M)
             n(i) = ceil(log(l(i)/(b(1)-a(1)))/log(0.5));
         end    
     end
-end
-
-%% function to easily calculate the dfxi depending on the case
-function [dfxi] = df(x, i)
-    syms z;
-    switch i
-        case 1
-            fxi = (z-2)^2 + z*log(z+3);
-            dfxi = diff(fxi);
-        case 2  
-            fxi = 5^z + (2-cos(z))^2;
-            dfxi = diff(fxi);
-        case 3
-            fxi = exp(z)*(z^3-1) + (z-1)*sin(z);
-            dfxi = diff(fxi);
-    end
-    dfxi = subs(dfxi, z, x);
 end
