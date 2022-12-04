@@ -34,7 +34,7 @@ for i = 1:3
                 %plot the results
                 figure();
                 contourf(x_plot,y_plot,fxy(x_plot,y_plot),'--');
-                title(['2D filled contour plot of f(x,y), gk const,',' x1 = ',num2str(x1),' y1 = ',num2str(y1)]);
+                title(['2D filled contour plot of f(x,y), Steepest Descent, gk const,',' x1 = ',num2str(x1),' y1 = ',num2str(y1)]);
                 hold on;
                 plot(x,y,'red');
                 scatter(x,y,'red');
@@ -45,7 +45,7 @@ for i = 1:3
                 figure()
                 k = 1:length(x);
                 plot(k,fxy(x,y),'k');
-                title(['f(x,y) values for different k, gk const,',' x1 = ',num2str(x1),' y1 = ',num2str(y1)]);
+                title(['f(x,y) values for different k, Steepest Descent, gk const,',' x1 = ',num2str(x1),' y1 = ',num2str(y1)]);
                 hold on;
                 scatter(k,fxy(x,y),'red');
                 xlabel('k');
@@ -57,7 +57,7 @@ for i = 1:3
                 %plot the results
                 figure();
                 contourf(x_plot,y_plot,fxy(x_plot,y_plot),'--');
-                title(['2D filled contour plot of f(x,y), gk that minimizes f(xk+gk*dk),',' x1 = ',num2str(x1),' y1 = ',num2str(y1)]);
+                title(['2D filled contour plot of f(x,y), Steepest Descent, gk that minimizes f(xk+gk*dk),',' x1 = ',num2str(x1),' y1 = ',num2str(y1)]);
                 hold on;
                 plot(x,y,'red');
                 scatter(x,y,'red');
@@ -68,7 +68,7 @@ for i = 1:3
                 figure()
                 k = 1:length(x);
                 plot(k,fxy(x,y),'k');
-                title(['f(x,y) values for different k, gk that minimizes f(xk+gk*dk),',' x1 = ',num2str(x1),' y1 = ',num2str(y1)]);
+                title(['f(x,y) values for different k, Steepest Descent, gk that minimizes f(xk+gk*dk),',' x1 = ',num2str(x1),' y1 = ',num2str(y1)]);
                 hold on;
                 scatter(k,fxy(x,y),'red');
                 xlabel('k');
@@ -80,7 +80,7 @@ for i = 1:3
                 %plot the results
                 figure();
                 contourf(x_plot,y_plot,fxy(x_plot,y_plot),'--');
-                title(['2D filled contour plot of f(x,y), gk armijo,',' x1 = ',num2str(x1),' y1 = ',num2str(y1)]);
+                title(['2D filled contour plot of f(x,y), Steepest Descent, gk armijo,',' x1 = ',num2str(x1),' y1 = ',num2str(y1)]);
                 hold on;
                 plot(x,y,'red');
                 scatter(x,y,'red');
@@ -91,7 +91,7 @@ for i = 1:3
                 figure()
                 k = 1:length(x);
                 plot(k,fxy(x,y),'k');
-                title(['f(x,y) values for different k, gk armijo,',' x1 = ',num2str(x1),' y1 = ',num2str(y1)]);
+                title(['f(x,y) values for different k, Steepest Descent, gk armijo,',' x1 = ',num2str(x1),' y1 = ',num2str(y1)]);
                 hold on;
                 scatter(k,fxy(x,y),'red');
                 xlabel('k');
