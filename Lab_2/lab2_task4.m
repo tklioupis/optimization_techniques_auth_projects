@@ -1,4 +1,4 @@
-%Lab 2 Task 2
+%Lab 2 Task 4
 %Theodoros Lioupis AEM 9733
 
 clear all;
@@ -11,7 +11,7 @@ stop = 3;
 n = 60;
 [x_plot,y_plot] = meshgrid(linspace(start,stop,n),linspace(start,stop,n));
 
-%% Running Steepest Descent method for every initial point (x1,y1) and for every gk case
+%% Running Levenberg-Marquardt method for every initial point (x1,y1) and for every gk case
 for i = 1:3
     %initialization of (x1,y1) / 3 cases : (0,0) (-1,1) (1,-1)
     switch i
@@ -30,11 +30,11 @@ for i = 1:3
         switch j
             case 1 %gk const
                 gk = 0.1;
-                [x,y] = StDes_gk_const(x1,y1,gk,epsilon);
+                [x,y] = LavMar_gk_const(x1,y1,gk,epsilon);
                 %plot the results
                 figure();
                 contourf(x_plot,y_plot,fxy(x_plot,y_plot),'--');
-                title(['2D filled contour plot of f(x,y), Steepest Descent, gk const,',' x1 = ',num2str(x1),' y1 = ',num2str(y1)]);
+                title(['2D filled contour plot of f(x,y), Levenberg-Marquardt, gk const,',' x1 = ',num2str(x1),' y1 = ',num2str(y1)]);
                 hold on;
                 plot(x,y,'red');
                 scatter(x,y,'red');
@@ -45,7 +45,7 @@ for i = 1:3
                 figure()
                 k = 1:length(x);
                 plot(k,fxy(x,y),'k');
-                title(['f(x,y) values for different k, Steepest Descent, gk const,',' x1 = ',num2str(x1),' y1 = ',num2str(y1)]);
+                title(['f(x,y) values for different k, Levenberg-Marquardt, gk const,',' x1 = ',num2str(x1),' y1 = ',num2str(y1)]);
                 hold on;
                 scatter(k,fxy(x,y),'red');
                 xlabel('k');
@@ -53,11 +53,11 @@ for i = 1:3
                 legend('f(x,y)','f(xk,yk)');
                 hold off;
             case 2 %gk that minimizes f(xk+gk*dk)
-                [x,y] = StDes_gk_minf(x1,y1,epsilon);
+                [x,y] = LavMar_gk_minf(x1,y1,epsilon);
                 %plot the results
                 figure();
                 contourf(x_plot,y_plot,fxy(x_plot,y_plot),'--');
-                title(['2D filled contour plot of f(x,y), Steepest Descent, gk that minimizes f(xk+gk*dk),',' x1 = ',num2str(x1),' y1 = ',num2str(y1)]);
+                title(['2D filled contour plot of f(x,y), Levenberg-Marquardt, gk that minimizes f(xk+gk*dk),',' x1 = ',num2str(x1),' y1 = ',num2str(y1)]);
                 hold on;
                 plot(x,y,'red');
                 scatter(x,y,'red');
@@ -68,7 +68,7 @@ for i = 1:3
                 figure()
                 k = 1:length(x);
                 plot(k,fxy(x,y),'k');
-                title(['f(x,y) values for different k, Steepest Descent, gk that minimizes f(xk+gk*dk),',' x1 = ',num2str(x1),' y1 = ',num2str(y1)]);
+                title(['f(x,y) values for different k, Levenberg-Marquardt, gk that minimizes f(xk+gk*dk),',' x1 = ',num2str(x1),' y1 = ',num2str(y1)]);
                 hold on;
                 scatter(k,fxy(x,y),'red');
                 xlabel('k');
@@ -76,11 +76,11 @@ for i = 1:3
                 legend('f(x,y)','f(xk,yk)');
                 hold off;
             case 3 %gk armijo
-                [x,y] = StDes_gk_armijo(x1,y1,epsilon);
+                [x,y] = LavMar_gk_armijo(x1,y1,epsilon);
                 %plot the results
                 figure();
                 contourf(x_plot,y_plot,fxy(x_plot,y_plot),'--');
-                title(['2D filled contour plot of f(x,y), Steepest Descent, gk armijo,',' x1 = ',num2str(x1),' y1 = ',num2str(y1)]);
+                title(['2D filled contour plot of f(x,y), Levenberg-Marquardt, gk armijo,',' x1 = ',num2str(x1),' y1 = ',num2str(y1)]);
                 hold on;
                 plot(x,y,'red');
                 scatter(x,y,'red');
@@ -91,7 +91,7 @@ for i = 1:3
                 figure()
                 k = 1:length(x);
                 plot(k,fxy(x,y),'k');
-                title(['f(x,y) values for different k, Steepest Descent, gk armijo,',' x1 = ',num2str(x1),' y1 = ',num2str(y1)]);
+                title(['f(x,y) values for different k, Levenberg-Marquardt, gk armijo,',' x1 = ',num2str(x1),' y1 = ',num2str(y1)]);
                 hold on;
                 scatter(k,fxy(x,y),'red');
                 xlabel('k');
@@ -103,26 +103,51 @@ for i = 1:3
     end
 end
 
-%% function to execute Steepest Descent Method with gk constant
-function [x,y] = StDes_gk_const(x1,y1,gk,epsilon)
+%% function to execute Levenberg-Marquardt Method with gk constant
+function [x,y] = LavMar_gk_const(x1,y1,gk,epsilon)
+    syms dk1 dk2;
     x(1) = x1;
     y(1) = y1;
     k = 1;
-    while norm(grad_fxy(x(k),y(k))) > epsilon
-        d(:,k) = -grad_fxy(x(k),y(k));
+    while norm(grad_fxy(x(k),y(k))) >= epsilon
+        mk = 0;
+        cond = grad2_fxy(x(k),y(k));
+        for i = 1:100
+            mk = i;
+            cond = grad2_fxy(x(k),y(k)) + mk*[1 0 ; 0 1];
+            if (cond(1,1)>0 && det(cond)>0)
+                break;
+            end
+        end
+        eqn = cond*[dk1 dk2].' + grad_fxy(x(k),y(k)) == 0;
+        sol = solve(eqn,dk1,dk2,'Real',true);
+        d(:,k) = [vpa(sol.dk1);vpa(sol.dk2)];
+
         x(k+1) = x(k)+gk*d(1,k);
         y(k+1) = y(k)+gk*d(2,k);
         k = k + 1;       
     end
 end
-
-%% function to execute Steepest Descent Method with gk that minimizes f(xk+gk*dk)
-function [x,y] = StDes_gk_minf(x1,y1,epsilon)
+%% function to execute Levenberg-Marquardt method with gk that minimizes f(xk+gk*dk)
+function [x,y] = LavMar_gk_minf(x1,y1,epsilon)
+    syms dk1 dk2;
     x(1) = x1;
     y(1) = y1;
     k = 1;
-    while norm(grad_fxy(x(k),y(k))) > epsilon
-        d(:,k) = -grad_fxy(x(k),y(k));
+    while norm(grad_fxy(x(k),y(k))) >= epsilon
+        mk = 0;
+        cond = grad2_fxy(x(k),y(k));
+        for i = 1:100
+            mk = i*2;
+            cond = grad2_fxy(x(k),y(k)) + mk*[1 0 ; 0 1];
+            if (cond(1,1)>0 && det(cond)>0)
+                break;
+            end
+        end
+        eqn = cond*[dk1 dk2].' + grad_fxy(x(k),y(k)) == 0;
+        sol = solve(eqn,dk1,dk2,'Real',true);
+        d(:,k) = [vpa(sol.dk1);vpa(sol.dk2)];
+
         eqn = dfxy(x(k),y(k)) == 0;
         g_poss(:,1) = solve(eqn,'Real',true);
         g_poss(:,1) = vpa(g_poss(:,1));
@@ -136,14 +161,27 @@ function [x,y] = StDes_gk_minf(x1,y1,epsilon)
         k = k + 1;       
     end
 end
-
-%% function to execute Steepest Descent Method with gk from armijo
-function [x,y] = StDes_gk_armijo(x1,y1,epsilon)
+%% function to execute Levenberg-Marquardt method with gk from armijo
+function [x,y] = LavMar_gk_armijo(x1,y1,epsilon)
+    syms dk1 dk2;
+    count = 0;
     x(1) = x1;
     y(1) = y1;
     k = 1;
-    while norm(grad_fxy(x(k),y(k))) > epsilon
-        d(:,k) = -grad_fxy(x(k),y(k));
+    while norm(grad_fxy(x(k),y(k))) >= epsilon
+        mk = 0;
+        cond = grad2_fxy(x(k),y(k));
+        for i = 1:100
+            mk = i;
+            cond = grad2_fxy(x(k),y(k)) + mk*[1 0 ; 0 1];
+            if (cond(1,1)>0 && det(cond)>0)
+                break;
+            end
+        end
+        eqn = cond*[dk1 dk2].' + grad_fxy(x(k),y(k)) == 0;
+        sol = solve(eqn,dk1,dk2,'Real',true);
+        d(:,k) = [vpa(sol.dk1);vpa(sol.dk2)];
+
         a = 0.01;
         b = 0.2;
         s = 1;
@@ -161,7 +199,12 @@ function [x,y] = StDes_gk_armijo(x1,y1,epsilon)
         end
         x(k+1) = x(k)+g(1,k)*d(1,k);
         y(k+1) = y(k)+g(1,k)*d(2,k);
-        k = k + 1;       
+        k = k + 1;  
+        count = count + 1;
+        if(count > 50)
+            fprintf('The newton method with gk from armijo is not working here (x1,y1) = (%.0f,%.0f)',x1,y1);
+            break;
+        end
     end
 end
 %% function to calculate the f(x,y)
@@ -177,6 +220,15 @@ function [grad_fXY] = grad_fxy(X,Y)
     grad_fxy = gradient(fxy,[x,y]);
     grad_fXY = subs(grad_fxy,[x y],{X,Y});
 end
+%% function to calculate the 2nd grade gradient of f(x,y) at X,Y
+function [grad2_fXY] = grad2_fxy(X,Y)
+    syms x y;
+    fxy = x^5*exp(-x^2-y^2);
+    grad_fxy = gradient(fxy,[x,y]);
+    grad2_fxy(:,1) = gradient(grad_fxy(1,1).',[x,y]);
+    grad2_fxy(:,2) = gradient(grad_fxy(2,1).',[x,y]);
+    grad2_fXY = subs(grad2_fxy,[x y],{X,Y});
+end
 %% function to calculate the df(xk - gk*grad(f(xk)))/dgk
 function dfxy = dfxy(xk,yk)
     syms x y gk;
@@ -185,6 +237,3 @@ function dfxy = dfxy(xk,yk)
     fxy = subs(fxy,{x,y},{xk+gk*d(1,1),yk+gk*d(2,1)});
     dfxy = diff(fxy,1,'gk');
 end
-
-
-

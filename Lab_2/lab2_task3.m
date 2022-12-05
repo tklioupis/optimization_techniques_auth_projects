@@ -11,7 +11,7 @@ stop = 3;
 n = 60;
 [x_plot,y_plot] = meshgrid(linspace(start,stop,n),linspace(start,stop,n));
 
-%% Running Steepest Descent Method for every initial point (x1,y1) and for every gk case
+%% Running Newton method for every initial point (x1,y1) and for every gk case
 for i = 1:3
     %initialization of (x1,y1) / 3 cases : (0,0) (-1,1) (1,-1)
     switch i
