@@ -103,7 +103,7 @@ for i = 1:3
     end
 end
 
-%% function to execute Steepest Descent Method with gk constant
+%% function to execute Steepest Descent method with gk constant
 function [x,y] = StDes_gk_const(x1,y1,gk,epsilon)
     x(1) = x1;
     y(1) = y1;
@@ -116,7 +116,7 @@ function [x,y] = StDes_gk_const(x1,y1,gk,epsilon)
     end
 end
 
-%% function to execute Steepest Descent Method with gk that minimizes f(xk+gk*dk)
+%% function to execute Steepest Descent method with gk that minimizes f(xk+gk*dk)
 function [x,y] = StDes_gk_minf(x1,y1,epsilon)
     x(1) = x1;
     y(1) = y1;
@@ -137,7 +137,7 @@ function [x,y] = StDes_gk_minf(x1,y1,epsilon)
     end
 end
 
-%% function to execute Steepest Descent Method with gk from armijo
+%% function to execute Steepest Descent method with gk from armijo
 function [x,y] = StDes_gk_armijo(x1,y1,epsilon)
     x(1) = x1;
     y(1) = y1;

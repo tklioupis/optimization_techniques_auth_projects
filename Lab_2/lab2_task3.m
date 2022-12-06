@@ -103,7 +103,7 @@ for i = 1:3
     end
 end
 
-%% function to execute Newton Method with gk constant
+%% function to execute Newton method with gk constant
 function [x,y] = newton_gk_const(x1,y1,gk,epsilon)
     x(1) = x1;
     y(1) = y1;
@@ -116,7 +116,7 @@ function [x,y] = newton_gk_const(x1,y1,gk,epsilon)
     end
 end
 
-%% function to execute Newton Method with gk that minimizes f(xk+gk*dk)
+%% function to execute Newton method with gk that minimizes f(xk+gk*dk)
 function [x,y] = newton_gk_minf(x1,y1,epsilon)
     x(1) = x1;
     y(1) = y1;
@@ -137,9 +137,8 @@ function [x,y] = newton_gk_minf(x1,y1,epsilon)
     end
 end
 
-%% function to execute Newton Method with gk from armijo
+%% function to execute Newton method with gk from armijo
 function [x,y] = newton_gk_armijo(x1,y1,epsilon)
-    count = 0;
     x(1) = x1;
     y(1) = y1;
     k = 1;
@@ -162,9 +161,8 @@ function [x,y] = newton_gk_armijo(x1,y1,epsilon)
         end
         x(k+1) = x(k)+g(1,k)*d(1,k);
         y(k+1) = y(k)+g(1,k)*d(2,k);
-        k = k + 1;  
-        count = count + 1;
-        if(count > 50)
+        k = k + 1;
+        if(k > 50)
             fprintf('The newton method with gk from armijo is not working here (x1,y1) = (%.0f,%.0f)',x1,y1);
             break;
         end
