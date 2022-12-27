@@ -12,8 +12,8 @@ n = 60;
 [x1_plot,x2_plot] = meshgrid(linspace(start,stop,n),linspace(start,stop,n));
 
 %% initial point
-x11 = -10;
-x21 = -8;
+x11 = 5;
+x21 = -5;
 
 %% Running Steepest Descent method for initial point (x11,x21) and for every gk case
 for i = 1:4
