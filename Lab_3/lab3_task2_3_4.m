@@ -123,12 +123,7 @@ function [x1,x2] = StDes_proj_gk_const(x11,x21,epsilon,gk,sk,x1_limits,x2_limits
         k = k + 1;
         if(k==500)
             break;
-        end
-%         grad_x_star = -grad_fx1x2(x1(k),x2(k));
-%         x_minus_x_star = [(x1_limits(1) - x1(k));(x2_limits(1) - x2(k))];
-%         if(grad_x_star.'*x_minus_x_star >= 0) %if x* -> stasimo simio
-%             break;
-%         end   
+        end  
     end
 end
 
